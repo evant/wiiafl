@@ -39,6 +39,20 @@ class WiiaflTest {
     }
 
     @Test
+    fun updates_child_to_FrameLayout_if_in_parent() {
+        val context = InstrumentationRegistry.getTargetContext()
+        val button = Button(context)
+        val linearLayout = LinearLayout(context).apply { addView(button) }
+
+        button.wiiafl()
+
+        val frameLayout = linearLayout.getChildAt(0) as ViewGroup
+        assertEquals(FrameLayout::class, frameLayout::class)
+        assertEquals(1, frameLayout.childCount)
+        assertSame(button, frameLayout.getChildAt(0))
+    }
+
+    @Test
     fun recursively_wraps_views_in_FrameLayouts() {
         val context = InstrumentationRegistry.getTargetContext()
         val button1 = Button(context)
